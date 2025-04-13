@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>IEEE Conference Paper Builder</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 40px;
+            background-color: #f5f5f5;
+        }
+        h2 { color: #003366; }
+        form {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px #ccc;
+        }
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            font-size: 14px;
+        }
+        button {
+            padding: 10px 20px;
+            background: #003366;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .optional-section {
+            background: #eef;
+            padding: 15px;
+            margin-top: 10px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>IEEE Conference Paper Builder</h2>
+
+    <form id="paperForm" method="POST">
+        <!-- Mandatory Fields -->
+        <div class="form-section">
+            <label for="title">Title</label>
+            <input type="text" id="title" name="title" placeholder="Enter Paper Title" required>
+        </div>
+
+        <div class="form-section">
+            <label for="authors">Authors</label>
+            <input type="text" id="authors" name="authors" placeholder="Enter Authors' Names" required>
+        </div>
+
+        <div class="form-section">
+            <label for="abstractText">Abstract</label>
+            <textarea id="abstractText" name="abstractText" placeholder="Enter Abstract" required></textarea>
+        </div>
+
+        <div class="form-section">
+            <label for="keywords">Keywords</label>
+            <input type="text" id="keywords" name="keywords" placeholder="Enter Keywords" required>
+        </div>
+
+        <div class="form-section">
+            <label for="introduction">Introduction</label>
+            <textarea id="introduction" name="introduction" placeholder="Enter Introduction" required></textarea>
+        </div>
+
+        <div class="form-section">
+            <label for="conclusion">Conclusion</label>
+            <textarea id="conclusion" name="conclusion" placeholder="Enter Conclusion" required></textarea>
+        </div>
+
+        <div class="form-section">
+            <label for="references">References</label>
+            <textarea id="references" name="references" placeholder="Enter References" required></textarea>
+        </div>
+
+        <!-- Optional Sections -->
+        <div class="optional-sections">
+            <button type="button" class="add-section-btn" onclick="addSection()">Add Optional Section</button>
+            <div id="newSectionsContainer"></div>
+        </div>
+
+        <!-- Save Version Button -->
+        <button type="button" class="save-btn" onclick="savePaper()">Save Version</button>
+    </form>
+
+    <div class="added-sections">
+        <h3>Added Sections</h3>
+        <div id="addedSections"></div>
+    </div>
+</div>
+
+<script>
+    let sectionCounter = 1;
+    let addedSectionsData = [];
+
+    // Function to add new sections
+    function addSection() {
+        const sectionName = prompt("Enter the name of the section you want to add:");
+        if (sectionName) {
+            const sectionId = 'section' + sectionCounter++;
+            const sectionDiv = document.createElement('div');
+            sectionDiv.classList.add('form-section');
+            sectionDiv.setAttribute('id', sectionId);
+
+            const label = document.createElement('label');
+            label.innerText = sectionName;
+            sectionDiv.appendChild(label);
+
+            const textArea = document.createElement('textarea');
+            textArea.placeholder = 'Enter content for ' + sectionName;
+            textArea.classList.add('sectionContent');
+            sectionDiv.appendChild(textArea);
+
+            const removeButton = document.createElement('button');
+            removeButton.innerText = 'Remove Section';
+            removeButton.type = 'button';
+            removeButton.onclick = () => removeSection(sectionId);
+            sectionDiv.appendChild(removeButton);
+
+            document.getElementById('newSectionsContainer').appendChild(sectionDiv);
+            displayAddedSection(sectionName, sectionId);
+        }
+    }
+
+    // Function to remove a section
+    function removeSection(sectionId) {
+        document.getElementById(sectionId).remove();
+        document.getElementById('addedSections').removeChild(document.getElementById('added-' + sectionId));
+        addedSectionsData = addedSectionsData.filter(section => section.id !== sectionId);
+    }
+
+    // Function to display added section in the "Added Sections" area
+    function displayAddedSection(sectionName, sectionId) {
+        const sectionDiv = document.createElement('div');
+        sectionDiv.classList.add('form-section');
+        sectionDiv.setAttribute('id', 'added-' + sectionId);
+
+        const sectionLabel = document.createElement('span');
+        sectionLabel.innerText = 'Added Section: ' + sectionName;
+        sectionDiv.appendChild(sectionLabel);
+
+        document.getElementById('addedSections').appendChild(sectionDiv);
+
+        // Store added section data
+        addedSectionsData.push({ id: sectionId, name: sectionName });
+    }
+
+    // Function to save the paper version
+    function savePaper() {
+        const paperData = {
+            title: document.getElementById('title').value,
+            authors: document.getElementById('authors').value,
+            abstractText: document.getElementById('abstractText').value,
+            keywords: document.getElementById('keywords').value,
+            introduction: document.getElementById('introduction').value,
+            conclusion: document.getElementById('conclusion').value,
+            references: document.getElementById('references').value,
+            optionalSections: addedSectionsData.map(section => {
+                const content = document.querySelector(`#${section.id} textarea`).value;
+                return { name: section.name, content: content };
+            })
+        };
+
+        $.ajax({
+            type: 'POST',
+            url: '/savePaperAjax',
+            contentType: 'application/json',
+            data: JSON.stringify(paperData),
+            success: function(response) {
+                alert(response);
+            },
+            error: function(xhr, status, error) {
+                alert("Error saving paper: " + error);
+            }
+        });
+    }
+</script>
+
+
+
+</body>
+</html>
