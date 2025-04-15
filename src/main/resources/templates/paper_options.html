@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Create Paper</title>
+    <link rel="stylesheet" th:href="@{/style.css}" />
+</head>
+<body>
+    <h2>Create New Paper</h2>
+    <form action="/chooseTemplate" method="post">
+        <label for="title">Paper Title:</label>
+        <input type="text" id="title" name="title" required><br><br>
+
+        <label for="authors">Authors:</label>
+        <input type="text" id="authors" name="authors" required><br><br>
+
+        <label>Use Existing Template?</label><br>
+        <input type="radio" id="yes" name="useTemplate" value="yes" required>
+        <label for="yes">Yes</label><br>
+        <input type="radio" id="no" name="useTemplate" value="no">
+        <label for="no">No</label><br><br>
+
+        <button type="submit">Next</button>
+    </form>
+</body>
+</html>

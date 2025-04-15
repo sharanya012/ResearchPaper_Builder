@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.rpbuilder.model.Paper;
 import com.rpbuilder.service.PaperService;
@@ -32,23 +32,36 @@ public class PaperController {
     }
 
     @GetMapping("/create")
-    public String showForm(Model model) {
-        model.addAttribute("paper", new Paper());  // Initialize a new Paper object
-        return "ieee_form";  // Returning the form view
+public String showPaperForm() {
+    return "paper_options"; // Shows the first form
+}
+
+    @PostMapping("/chooseTemplate")
+public String chooseTemplate(@RequestParam String title,
+                             @RequestParam String authors,
+                             @RequestParam String useTemplate,
+                             Model model) {
+    if (useTemplate.equals("yes")) {
+        model.addAttribute("paper", new Paper());
+        return "ieee_form"; // Will be handled in next step
+    } else {
+        // We'll implement "no" later
+        return "redirect:/create";
     }
+}
 
     // Save paper after form submission (non-AJAX)
     @PostMapping("/savePaper")
-public String submitForm(@ModelAttribute Paper paper, RedirectAttributes redirectAttrs) {
-    try {
-        service.savePaper(paper);
-        redirectAttrs.addFlashAttribute("message", "Paper saved successfully!");
-    } catch (Exception e) {
-        redirectAttrs.addFlashAttribute("error", "Error saving paper: " + e.getMessage());
+    public String submitForm(@ModelAttribute Paper paper, Model model) {
+        // Handle the saving of paper including optional sections
+        try {
+            service.savePaper(paper);
+            model.addAttribute("message", "Paper saved successfully!");
+        } catch (Exception e) {
+            model.addAttribute("error", "Error saving paper: " + e.getMessage());
+        }
+        return "ieee_form";  // Returning the form view after saving
     }
-    return "redirect:/create";
-}
-
 
     // AJAX endpoint to save paper without reloading the page
     @PostMapping("/savePaperAjax")

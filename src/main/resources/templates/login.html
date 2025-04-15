@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login/Register</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to your CSS file -->
+    <script>
+        // Function to toggle between login and register forms
+        function toggleForm(formType) {
+            if (formType === 'login') {
+                document.getElementById('loginForm').style.display = 'block';
+                document.getElementById('registerForm').style.display = 'none';
+            } else {
+                document.getElementById('loginForm').style.display = 'none';
+                document.getElementById('registerForm').style.display = 'block';
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>Login/Register</h1>
+
+    <!-- Buttons to toggle between Login and Register forms -->
+    <button onclick="toggleForm('login')">Login</button>
+    <button onclick="toggleForm('register')">Register</button>
+
+    <!-- Login Form -->
+    <div id="loginForm" style="display:block;">
+        <h2>Login</h2>
+        <form action="/user-login" method="POST">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+        
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+        
+            <button type="submit">Login</button>
+        
+            <div th:if="${error}" style="color:red;">
+                <p th:text="${error}"></p>
+            </div>
+        </form>
+        
+    </div>
+
+    <!-- Register Form -->
+    <div id="registerForm" style="display:none;">
+        <h2>Register</h2>
+        <form action="/register" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+        
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+        
+            <label for="phoneNumber">Phone Number:</label>
+            <input type="text" id="phoneNumber" name="phoneNumber" required>
+        
+            <label for="userType">User Type:</label>
+            <select id="userType" name="userType">
+                <option value="student">Student</option>
+                <option value="working professional">Working Professional</option>
+                <option value="professor">Professor</option>
+            </select>
+        
+            <label for="institution">Institution:</label>
+            <input type="text" id="institution" name="institution">
+        
+            <label for="department">Department:</label>
+            <input type="text" id="department" name="department">
+        
+            <label for="position">Position:</label>
+            <input type="text" id="position" name="position">
+        
+            <button type="submit">Register</button>
+        
+            <div th:if="${error}" style="color:red;">
+                <p th:text="${error}"></p>
+            </div>
+        </form>
+        
+    </div>
+</body>
+</html>

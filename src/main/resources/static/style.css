@@ -1,16 +1,38 @@
-body {
+/* Universal Styles */
+* {
     margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #ffffff;
     color: #333;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
 }
 
+h1, h2, h3, h4, h5, h6 {
+    margin: 0;
+    font-weight: 600;
+}
+
+/* Layout and Container */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Topbar (for navigation or header) */
 .topbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     background-color: white;
-    padding: 20px 40px;
+    padding: 15px 40px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
@@ -35,17 +57,17 @@ body {
     color: white;
 }
 
+/* Main Content Area */
 .main-content {
     display: flex;
     justify-content: center;
     align-items: center;
-    padding: 60px 40px;
+    padding: 60px 20px;
 }
 
+/* Call to Action Section */
 .cta-section {
     display: flex;
-    max-width: 1200px;
-    width: 100%;
     justify-content: space-between;
     align-items: center;
     gap: 50px;
@@ -76,7 +98,60 @@ body {
     background-color: #431c75;
 }
 
+/* Image styling */
 .cta-image img {
     max-width: 400px;
     width: 100%;
+    border-radius: 10px;
+}
+
+/* Forms and Inputs */
+input[type="text"], input[type="email"], input[type="password"], textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input[type="submit"], button {
+    background-color: #5e2ca5;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+input[type="submit"]:hover, button:hover {
+    background-color: #431c75;
+}
+
+/* Utility Classes */
+.text-center {
+    text-align: center;
+}
+
+.flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.margin-top {
+    margin-top: 20px;
+}
+
+.margin-bottom {
+    margin-bottom: 20px;
+}
+
+.padding-top {
+    padding-top: 20px;
+}
+
+.padding-bottom {
+    padding-bottom: 20px;
 }

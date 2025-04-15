@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Configure Paper</title>
+    <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+    <h1>Customize Your Paper</h1>
+    <form action="/savePaperConfig" method="post">
+        <input type="hidden" name="title" th:value="${title}">
+        <input type="hidden" name="authors" th:value="${authors}">
+
+        <label for="spacing">Line Spacing:</label>
+        <select name="spacing" required>
+            <option value="single">Single</option>
+            <option value="1.5">1.5</option>
+            <option value="double">Double</option>
+        </select><br><br>
+
+        <label for="letterSize">Letter Size:</label>
+        <select name="letterSize" required>
+            <option value="A4">A4</option>
+            <option value="Letter">Letter</option>
+        </select><br><br>
+
+        <label for="columns">Number of Columns:</label>
+        <input type="number" name="columns" min="1" max="3" value="1" required><br><br>
+
+        <label>Optional Sections (select as needed):</label><br>
+        <input type="checkbox" name="sections" value="Literature Review"> Literature Review<br>
+        <input type="checkbox" name="sections" value="Methodology"> Methodology<br>
+        <input type="checkbox" name="sections" value="Results"> Results<br>
+        <input type="checkbox" name="sections" value="Discussion"> Discussion<br>
+        <input type="checkbox" name="sections" value="Appendix"> Appendix<br><br>
+
+        <button type="submit">Save Paper Config</button>
+        <a href="/create"><button type="button">Back</button></a>
+    </form>
+</body>
+</html>
